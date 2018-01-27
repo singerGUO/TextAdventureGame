@@ -11,12 +11,13 @@ class GameFrame extends JFrame {
     private static Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
     private static JButton startButton, backGroundStoryButton, choiceButton, choiceButton1, choiceButton2, choiceButton3, choiceButton4;
     private static JTextArea mainTextArea, backGroundTextArea, backGroundStoryTitle;
-    private static int playerHP, monsterHP, silverRing;
+    private static int playerHP, monsterHP, playerDamage = 5, silverRing;
     private static String weapon, position;
     private static final int windowWidth = 800, windowHeight = 600;
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
     private static TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
     private static ChoiceHandler choiceHandler = new ChoiceHandler();
+    private static boolean drinkSpring = false;
 
     public GameFrame(){
         setSize(windowWidth, windowHeight);
@@ -86,7 +87,7 @@ class GameFrame extends JFrame {
     }
 
     private static void createMainTextArea(){
-        mainTextArea = new JTextArea("This is the main text are. This game is going to be great. I'm sure of it!!!!!!!");
+        mainTextArea = new JTextArea();
         mainTextArea.setBounds(100, 100, 600, 250);
         mainTextArea.setBackground(Color.black);
         mainTextArea.setForeground(Color.white);
@@ -150,9 +151,9 @@ class GameFrame extends JFrame {
     }
 
     private static void playerSetup() {
-        playerHP = 15;
+        playerHP = 10;
         monsterHP = 20;
-        weapon = "Knife";
+        weapon = "Dagger";
         weaponLabelName.setText(weapon);
         hpLabelNumber.setText("" + playerHP);
         townGate();
@@ -255,8 +256,14 @@ class GameFrame extends JFrame {
 
     private static void north() {
         position = "north";
-        mainTextArea.setText("There is a river. \nYou drink the water and rest at the riverside. \n\n(Your HP is recovered by 2)");
-        playerHP = playerHP + 2;
+        if(!drinkSpring) {
+            mainTextArea.setText("There is a spring. \nYou drink the water and feel empowered. \n\n(Your attack is increased by 5)");
+            playerDamage += 5;
+            drinkSpring = true;
+        }
+        else{
+            mainTextArea.setText("You are not thirsty anymore.");
+        }
         hpLabelNumber.setText("" + playerHP);
         choiceButton1.setText("Go south");
         choiceButton2.setText("");
@@ -296,12 +303,8 @@ class GameFrame extends JFrame {
     private static void playerAttack() {
         position = "playerAttack";
 
-        int playerDamage = 0;
-
-        if (weapon.equals("Knife")) {
-            playerDamage = new java.util.Random().nextInt(3);
-        } else if (weapon.equals("Long Sword")) {
-            playerDamage = new java.util.Random().nextInt(12);
+        if (weapon.equals("Long Sword")) {
+            playerDamage += 2;
         }
 
         mainTextArea.setText("You attacked the monster and gave " + playerDamage + " damage!");
