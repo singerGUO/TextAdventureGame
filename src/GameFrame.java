@@ -9,7 +9,7 @@ class GameFrame extends JFrame {
     private static JLabel titleNameLabel, playerPanelLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName, attackLabel, attackLabelNumber;
     private static Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
     private static Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
-    private static Font playerLabelFont = new Font("Times New Roman", Font.PLAIN, 25);
+    private static Font playerLabelFont = new Font("Times New Roman", Font.PLAIN, 22);
     private static JButton startButton, backGroundStoryButton, choiceButton, choiceButton1, choiceButton2, choiceButton3, choiceButton4;
     private static JTextArea mainTextArea, backGroundTextArea, backGroundStoryTitle;
     private static int playerHP, monsterHP, playerAttack = 5, silverRing;
@@ -243,7 +243,7 @@ class GameFrame extends JFrame {
     private static void attackGuard() {
         position = "attackGuard";
         mainTextArea.setText("Guard: Hey don't be stupid!\n\nThe guard fought back and hit you hard.\n(You receive 3 damage)");
-        playerHP = playerHP - 3;
+        playerHP = playerHP - 8;
         hpLabelNumber.setText("" + playerHP);
         choiceButton1.setText(">");
         choiceButton2.setText("");
@@ -265,6 +265,7 @@ class GameFrame extends JFrame {
         if(!drinkSpring) {
             mainTextArea.setText("There is a spring. \nYou drink the water and feel empowered. \n\n(Your attack is increased by 5)");
             playerAttack += 5;
+            attackLabelNumber.setText("" + playerAttack);
             drinkSpring = true;
         }
         else{
@@ -279,10 +280,11 @@ class GameFrame extends JFrame {
 
     private static void east() {
         position = "east";
-        mainTextArea.setText("You walked into a forest and found a Long Sword!\n\n(You obtained a Long Sword)");
-        weapon = "Long Sword";
+        mainTextArea.setText("You walked into a forest and found a Sword!\n\n(You obtained a Sword)");
+        weapon = "Sword";
         weaponLabelName.setText(weapon);
-        attackLabelNumber.setText("" + playerAttack + 2);
+        playerAttack += 2;
+        attackLabelNumber.setText("" + playerAttack);
         choiceButton1.setText("Go west");
         choiceButton2.setText("");
         choiceButton3.setText("");
@@ -291,9 +293,9 @@ class GameFrame extends JFrame {
 
     private static void west() {
         position = "west";
-        mainTextArea.setText("You encounter a goblin!");
-        choiceButton1.setText("Fight");
-        choiceButton2.setText("Run");
+        mainTextArea.setText("You walked into a Wisdom Village.");
+        choiceButton1.setText("Go East");
+        choiceButton2.setText("");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
@@ -310,7 +312,7 @@ class GameFrame extends JFrame {
     private static void playerAttack() {
         position = "playerAttack";
 
-        if (weapon.equals("Long Sword")) {
+        if (weapon.equals("Sword")) {
             playerAttack += 2;
         }
 
@@ -459,9 +461,6 @@ class GameFrame extends JFrame {
                 case "west":
                     switch (yourChoice) {
                         case "c1":
-                            fight();
-                            break;
-                        case "c2":
                             crossRoad();
                             break;
                     }
