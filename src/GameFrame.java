@@ -12,8 +12,8 @@ class GameFrame extends JFrame {
     private static Font playerLabelFont = new Font("Times New Roman", Font.PLAIN, 22);
     private static JButton startButton, backGroundStoryButton, choiceButton, choiceButton1, choiceButton2, choiceButton3, choiceButton4;
     private static JTextArea mainTextArea, backGroundTextArea, backGroundStoryTitle;
-    private static int playerHP, monsterHP, playerAttack = 5, silverRing;
-    private static String weapon, position;
+    private static int playerHP, monsterHP, playerAttack = 5, banditAttack, silverRing;
+    private static String weapon, position, monster;
     private static final int windowWidth = 800, windowHeight = 600;
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
     private static TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
@@ -285,8 +285,8 @@ class GameFrame extends JFrame {
         weaponLabelName.setText(weapon);
         playerAttack += 2;
         attackLabelNumber.setText("" + playerAttack);
-        choiceButton1.setText("Go west");
-        choiceButton2.setText("");
+        choiceButton1.setText("fight");
+        choiceButton2.setText("Leave");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
@@ -304,17 +304,13 @@ class GameFrame extends JFrame {
         position = "fight";
         mainTextArea.setText("Monster HP: " + monsterHP + "\n\nWhat do you do?");
         choiceButton1.setText("Attack");
-        choiceButton2.setText("Run");
+        choiceButton2.setText("");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
 
-    private static void playerAttack() {
-        position = "playerAttack";
-
-        if (weapon.equals("Sword")) {
-            playerAttack += 2;
-        }
+    private static void playerAttackBandit() {
+        position = "playerAttackBandit";
 
         mainTextArea.setText("You attacked the monster and gave " + playerAttack + " damage!");
 
@@ -326,16 +322,14 @@ class GameFrame extends JFrame {
         choiceButton4.setText("");
     }
 
-    private static void monsterAttack() {
-        position = "monsterAttack";
+    private static void banditAttack() {
+        position = "banditAttack";
 
-        int monsterDamage = 0;
+        banditAttack = 4;
 
-        monsterDamage = new java.util.Random().nextInt(6);
+        mainTextArea.setText("The monster attacked you and gave " + banditAttack + " damage!");
 
-        mainTextArea.setText("The monster attacked you and gave " + monsterDamage + " damage!");
-
-        playerHP = playerHP - monsterDamage;
+        playerHP = playerHP - banditAttack;
         hpLabelNumber.setText("" + playerHP);
 
         choiceButton1.setText(">");
@@ -454,8 +448,10 @@ class GameFrame extends JFrame {
                 case "east":
                     switch (yourChoice) {
                         case "c1":
-                            crossRoad();
+                            fight();
                             break;
+                        case "c2":
+                            crossRoad();
                     }
                     break;
                 case "west":
@@ -468,25 +464,22 @@ class GameFrame extends JFrame {
                 case "fight":
                     switch (yourChoice) {
                         case "c1":
-                            playerAttack();
-                            break;
-                        case "c2":
-                            crossRoad();
+                            playerAttackBandit();
                             break;
                     }
                     break;
-                case "playerAttack":
+                case "playerAttackBandit":
                     switch (yourChoice) {
                         case "c1":
                             if (monsterHP < 1) {
                                 win();
                             } else {
-                                monsterAttack();
+                                banditAttack();
                             }
                             break;
                     }
                     break;
-                case "monsterAttack":
+                case "banditAttack":
                     switch (yourChoice) {
                         case "c1":
                             if (playerHP < 1) {
