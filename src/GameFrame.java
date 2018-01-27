@@ -6,12 +6,13 @@ import java.awt.event.ActionListener;
 class GameFrame extends JFrame {
     private static Container gameContainer;
     private static JPanel titleNamePanel, startButtonPanel, backGroundStoryButtonPanel, mainTextPanel, choiceButtonPanel, playerPanel, backGroundStoryPanel;
-    private static JLabel titleNameLabel, playerPanelLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName;
+    private static JLabel titleNameLabel, playerPanelLabel, hpLabel, hpLabelNumber, weaponLabel, weaponLabelName, attackLabel, attackLabelNumber;
     private static Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
     private static Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
+    private static Font playerLabelFont = new Font("Times New Roman", Font.PLAIN, 25);
     private static JButton startButton, backGroundStoryButton, choiceButton, choiceButton1, choiceButton2, choiceButton3, choiceButton4;
     private static JTextArea mainTextArea, backGroundTextArea, backGroundStoryTitle;
-    private static int playerHP, monsterHP, playerDamage = 5, silverRing;
+    private static int playerHP, monsterHP, playerAttack = 5, silverRing;
     private static String weapon, position;
     private static final int windowWidth = 800, windowHeight = 600;
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
@@ -128,9 +129,11 @@ class GameFrame extends JFrame {
         playerPanel = new JPanel();
         playerPanel.setBounds(100, 15, 600, 50);
         playerPanel.setBackground(Color.BLACK);
-        playerPanel.setLayout(new GridLayout(1, 4));
+        playerPanel.setLayout(new GridLayout(1, 6));
         gameContainer.add(playerPanel);
 
+        attackLabel = newPlayerPanelLabels("Attack: ");
+        attackLabelNumber = newPlayerPanelLabels("");
         hpLabel = newPlayerPanelLabels("HP: ");
         hpLabelNumber = newPlayerPanelLabels("");
         weaponLabel = newPlayerPanelLabels("Weapon: ");
@@ -140,12 +143,14 @@ class GameFrame extends JFrame {
         playerPanel.add(hpLabelNumber);
         playerPanel.add(weaponLabel);
         playerPanel.add(weaponLabelName);
+        playerPanel.add(attackLabel);
+        playerPanel.add(attackLabelNumber);
     }
 
     private static JLabel newPlayerPanelLabels(String labelName){
         playerPanelLabel = new JLabel(labelName);
         playerPanelLabel.setText(labelName);
-        playerPanelLabel.setFont(normalFont);
+        playerPanelLabel.setFont(playerLabelFont);
         playerPanelLabel.setForeground(Color.white);
         return playerPanelLabel;
     }
@@ -156,6 +161,7 @@ class GameFrame extends JFrame {
         weapon = "Dagger";
         weaponLabelName.setText(weapon);
         hpLabelNumber.setText("" + playerHP);
+        attackLabelNumber.setText("" + playerAttack);
         townGate();
     }
 
@@ -258,7 +264,7 @@ class GameFrame extends JFrame {
         position = "north";
         if(!drinkSpring) {
             mainTextArea.setText("There is a spring. \nYou drink the water and feel empowered. \n\n(Your attack is increased by 5)");
-            playerDamage += 5;
+            playerAttack += 5;
             drinkSpring = true;
         }
         else{
@@ -276,6 +282,7 @@ class GameFrame extends JFrame {
         mainTextArea.setText("You walked into a forest and found a Long Sword!\n\n(You obtained a Long Sword)");
         weapon = "Long Sword";
         weaponLabelName.setText(weapon);
+        attackLabelNumber.setText("" + playerAttack + 2);
         choiceButton1.setText("Go west");
         choiceButton2.setText("");
         choiceButton3.setText("");
@@ -304,12 +311,12 @@ class GameFrame extends JFrame {
         position = "playerAttack";
 
         if (weapon.equals("Long Sword")) {
-            playerDamage += 2;
+            playerAttack += 2;
         }
 
-        mainTextArea.setText("You attacked the monster and gave " + playerDamage + " damage!");
+        mainTextArea.setText("You attacked the monster and gave " + playerAttack + " damage!");
 
-        monsterHP = monsterHP - playerDamage;
+        monsterHP = monsterHP - playerAttack;
 
         choiceButton1.setText(">");
         choiceButton2.setText("");
