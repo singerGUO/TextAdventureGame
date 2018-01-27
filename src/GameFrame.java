@@ -10,16 +10,16 @@ class GameFrame extends JFrame {
     private static Font titleFont = new Font("Times New Roman", Font.PLAIN, 90);
     private static Font normalFont = new Font("Times New Roman", Font.PLAIN, 28);
     private static JButton startButton, backGroundStoryButton, choiceButton, choiceButton1, choiceButton2, choiceButton3, choiceButton4;
-    private static JTextArea mainTextArea, backGroundTextArea;
+    private static JTextArea mainTextArea, backGroundTextArea, backGroundStoryTitle;
     private static int playerHP, monsterHP, silverRing;
     private static String weapon, position;
-
+    private static final int windowWidth = 800, windowHeight = 600;
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
     private static TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
     private static ChoiceHandler choiceHandler = new ChoiceHandler();
 
     public GameFrame(){
-        setSize(800, 600);
+        setSize(windowWidth, windowHeight);
         getContentPane().setBackground(Color.BLACK);
         setLayout(null);
 
@@ -164,11 +164,11 @@ class GameFrame extends JFrame {
 
         createBackGroundStoryPanel();
         createBackGroundStoryArea();
+        createBackGroundStoryTitle();
 
         createBackGroundStoryButtonPanel();
         createBackGroundStoryButton();
 
-        backGroundStoryPanel.add(backGroundTextArea);
         backGroundStoryButtonPanel.add(backGroundStoryButton);
 
         gameContainer.add(backGroundStoryPanel);
@@ -177,17 +177,28 @@ class GameFrame extends JFrame {
 
     private static void createBackGroundStoryPanel(){
         backGroundStoryPanel = new JPanel();
-        backGroundStoryPanel.setBounds(20, 100, 600, 250);
+        backGroundStoryPanel.setLayout(null);
+        backGroundStoryPanel.setBounds(70, 70, windowWidth - 30, windowHeight - 300);
         backGroundStoryPanel.setBackground(Color.BLACK);
     }
 
     private static void createBackGroundStoryArea(){
-        backGroundTextArea = new JTextArea("You are an exiled prince,looking to reclaim your \npower to thre throne. You decided to go on an \nadvanture to gain more gifts to defeat all the\nenemies in your way.  ");
-        backGroundTextArea.setBounds(200, 100, 600, 600);
-        backGroundTextArea.setBackground(Color.black);
+        backGroundTextArea = new JTextArea("You are an exiled prince, looking to reclaim your \npower to thre throne. You decided to go on an \nadvanture to gain more gifts to defeat all the\nenemies in your way.  ");
+        backGroundTextArea.setBounds(50, 100, windowWidth - 50, 200);
+        backGroundTextArea.setBackground(Color.BLACK);
         backGroundTextArea.setForeground(Color.green);
         backGroundTextArea.setFont(normalFont);
         backGroundTextArea.setLineWrap(true);
+        backGroundStoryPanel.add(backGroundTextArea);
+    }
+
+    private static void createBackGroundStoryTitle(){
+        backGroundStoryTitle = new JTextArea("Background Story");
+        backGroundStoryTitle.setFont(new Font("Serif", Font.BOLD, 48));
+        backGroundStoryTitle.setBounds(50, 30, windowWidth - 50, 50);
+        backGroundStoryTitle.setBackground(Color.BLACK);
+        backGroundStoryTitle.setForeground(Color.YELLOW);
+        backGroundStoryPanel.add(backGroundStoryTitle);
     }
 
     private static void createBackGroundStoryButtonPanel() {
