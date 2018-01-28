@@ -19,13 +19,13 @@ class GameFrame extends JFrame {
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
     private static TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
     private static ChoiceHandler choiceHandler = new ChoiceHandler();
-    private static boolean drinkSpring = false, banditDefeated = false;
-    private static int monsterCount =0;
+    private static boolean drinkSpring = false, banditDefeated = false, eaten = false, questionAnswered = false;
+    private static int monsterCount = 0;
 
     //stats
-    private static String[] monsterName = {"Bandit","Wild Beast", "Dragon"};
-    private static int[] monsterHP = {20,40,60};
-    private static int[] monsterAttack = {4,15,20};
+    private static String[] monsterName = {"Bandit", "Wild Beast", "Dragon"};
+    private static int[] monsterHP = {20, 40, 60};
+    private static int[] monsterAttack = {4, 15, 20};
     private static int playerHP,  playerAttack;
     private static String weapon, position;
 
@@ -308,9 +308,17 @@ class GameFrame extends JFrame {
 
     private static void west() {
         position = "west";
-        mainTextArea.setText("You walked into a Wisdom Village.");
-        choiceButton1.setText("Go East");
-        choiceButton2.setText("");
+        if(!eaten){
+            playerHP = 20;
+            hpLabelNumber.setText("" + playerHP);
+            eaten = true;
+            mainTextArea.setText("You are in front of the Wisdom Village.\nYou found some food and ate it. Your hp is full now.\nEnter the village?");
+        }
+        else{
+            mainTextArea.setText("You are in front of the Wisdom Village.\nEnter the village?");
+        }
+        choiceButton1.setText("Walk inside");
+        choiceButton2.setText("Go East");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
@@ -327,7 +335,7 @@ class GameFrame extends JFrame {
     private static void playerAttack() {
         position = "playerAttack";
 
-        mainTextArea.setText("You attacked " + monsterName[monsterCount]+". Delivered " + playerAttack + " damage!");
+        mainTextArea.setText("You attacked " + monsterName[monsterCount] + ". Delivered " + playerAttack + " damage!");
 
         monsterHP[monsterCount] = monsterHP[monsterCount] - playerAttack;
 
@@ -340,9 +348,7 @@ class GameFrame extends JFrame {
     private static void monsterAttack() {
         position = "monsterAttack";
 
-
-
-        mainTextArea.setText("The"+monsterName[monsterCount]+" attacked you and gave " + monsterAttack[monsterCount] + " damage!");
+        mainTextArea.setText("The" + monsterName[monsterCount] + " attacked you and gave " + monsterAttack[monsterCount] + " damage!");
 
         playerHP = playerHP - monsterAttack[monsterCount];
         hpLabelNumber.setText("" + playerHP);
@@ -395,6 +401,51 @@ class GameFrame extends JFrame {
         choiceButton2.setVisible(false);
         choiceButton3.setVisible(false);
         choiceButton4.setVisible(false);
+    }
+
+    private static void wisdomVillage() {
+        position = "wisdomVillage";
+        mainTextArea.setText("Hi, this is the chief of wisdom of village. My son was cursed by the troll. Can you rack you mind. using our bow and arrow to hit the troll on the mountain at the height 4km. The distance between mountain and village is also 4km.");
+        choiceButton1.setText("Right Answer");
+        choiceButton2.setText("Wrong Answer");
+        choiceButton3.setText("Wrong Answer");
+        choiceButton4.setText("Go Back");
+    }
+
+    private static void rightAnswer(){
+        position = "rightAnswer";
+        questionAnswered = true;
+        mainTextArea.setText("Thanks for saving my son! You can have the bow and arrows.\n I know dragon is inside the village. You will get a valuable treasure after killing it. Do you want to go now?");
+
+        weapon = "Bow";
+        weaponLabelName.setText(weapon);
+        playerAttack += 5;
+        attackLabelNumber.setText("" + playerAttack);
+
+        choiceButton1.setText("Fight the dragon");
+        choiceButton2.setText("Go Back");
+        choiceButton3.setText("");
+        choiceButton4.setText("");
+    }
+
+    private static void wrongAnswer(){
+        position = "wrongAnswer";
+        questionAnswered = true;
+        mainTextArea.setText("Too bad. Anyway, I know there is a dragon inside the village. Do you want to fight with it now?");
+
+        choiceButton1.setText("Fight the dragon");
+        choiceButton2.setText("Go Back");
+        choiceButton3.setText("");
+        choiceButton4.setText("");
+    }
+
+    private static void dragon(){
+        mainTextArea.setText("You have encountered a dragon. Fight the dragon?");
+
+        choiceButton1.setText("Fight the dragon");
+        choiceButton2.setText("Go Back");
+        choiceButton3.setText("");
+        choiceButton4.setText("");
     }
 
     public static class TitleScreenHandler implements ActionListener {
@@ -483,6 +534,12 @@ class GameFrame extends JFrame {
                 case "west":
                     switch (yourChoice) {
                         case "c1":
+                            if(!questionAnswered)
+                                wisdomVillage();
+                            else
+                                dragon();
+                            break;
+                        case "c2":
                             crossRoad();
                             break;
                     }
@@ -522,6 +579,52 @@ class GameFrame extends JFrame {
                     switch (yourChoice) {
                         case "c1":
                             crossRoad();
+                            break;
+                    }
+                    break;
+                case "wisdomVillage":
+                    switch (yourChoice) {
+                        case "c1":
+                            rightAnswer();
+                            break;
+                        case "c2":
+                            wrongAnswer();
+                            break;
+                        case "c3":
+                            wrongAnswer();
+                            break;
+                        case "c4":
+                            crossRoad();
+                            break;
+                    }
+                    break;
+                case "rightAnswer":
+                    switch(yourChoice){
+                        case "c1":
+                            //fight();
+                            break;
+                        case "c2":
+                            crossRoad();
+                    }
+                    break;
+                case "wrongAnswer":
+                    switch (yourChoice){
+                        case "c1":
+                            //fight();
+                            break;
+                        case "c2":
+                            crossRoad();
+                            break;
+                    }
+                    break;
+                case "dragon":
+                    switch (yourChoice) {
+                        case "c1":
+                            fight();
+                            break;
+                        case "c2":
+                            crossRoad();
+                            break;
                     }
                     break;
             }
