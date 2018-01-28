@@ -20,7 +20,7 @@ class GameFrame extends JFrame {
     private static IntroScreenHandler introScreenHandler = new IntroScreenHandler();
     private static TitleScreenHandler titleScreenHandler = new TitleScreenHandler();
     private static ChoiceHandler choiceHandler = new ChoiceHandler();
-    private static boolean drinkSpring = false, banditDefeated = false, eaten = false, questionAnswered = false;
+    private static boolean drinkSpring = false, banditDefeated = false, eaten = false, questionAnswered = false, beastDead = false;
     private static int monsterCount = 0;
 
     //stats
@@ -54,7 +54,6 @@ class GameFrame extends JFrame {
         titleNamePanel.setBounds(100, 100, 600, 150);
         titleNamePanel.setBackground(Color.black);
     }
-
     private static JLabel createTitleNameLabel() {
         titleNameLabel = new JLabel("The Adventure of the bigBoi");
         titleNameLabel.setForeground(Color.white);
@@ -201,7 +200,7 @@ class GameFrame extends JFrame {
     }
 
     private static void createBackGroundStoryArea(){
-        backGroundTextArea = new JTextArea("It is sunday and there is a party in the caslte. \n But you are not invited becasue you are not cool engouh \n go on an adventure to gain some respects!");
+        backGroundTextArea = new JTextArea("It is sunday and there is a party in the castle. \n But you are not invited because you are not cool engouh \n go on an adventure to gain some respects!");
         backGroundTextArea.setBounds(50, 100, windowWidth - 50, 200);
         backGroundTextArea.setBackground(Color.BLACK);
         backGroundTextArea.setForeground(Color.green);
@@ -235,9 +234,9 @@ class GameFrame extends JFrame {
 
     private static void townGate() {
         position = "townGate";
-        mainTextArea.setText("You are at the gate of the town. \nA guard is standing in front of you. \n\nWhat do you do?");
+        mainTextArea.setText("You are at the gate of the castle. \nA guard is standing in front of you.");
         choiceButton1.setText("Talk to the guard");
-        choiceButton2.setText("Attack the guard");
+        choiceButton2.setText("Attack the guard(really?)");
         choiceButton3.setText("Leave");
         choiceButton4.setText("");
     }
@@ -245,15 +244,19 @@ class GameFrame extends JFrame {
     private static void talkGuard() {
         position = "talkGuard";
         mainTextArea.setText("Guard: show me your invitation ");
-        choiceButton1.setText(">");
+        if(beastDead){
+            choiceButton2.setText("here");
+
+        }else{
+        choiceButton1.setText("I don't have one");
         choiceButton2.setText("");
         choiceButton3.setText("");
-        choiceButton4.setText("");
+        choiceButton4.setText("");}
     }
 
     private static void attackGuard() {
         position = "attackGuard";
-        mainTextArea.setText("Guard: Hey don't be stupid!\n\nThe guard fought back and hit you hard.\n(You receive 3 damage)");
+        mainTextArea.setText("Guard: wow really?!\n\nThe guard slapped you hard.\n(You received 2 damage");
         playerHP = playerHP - 2;
         hpLabelNumber.setText("" + playerHP);
         choiceButton1.setText(">");
@@ -274,8 +277,9 @@ class GameFrame extends JFrame {
     private static void north() {
         position = "north";
         if(!drinkSpring) {
-            mainTextArea.setText("There is a river. \nYou drank the water and it made you feel good. \n\n(Your attack increased by 5)");
+            mainTextArea.setText("There is a river here. \nYou drank some water and it made you feel good. \n\n(restored full hp and attack increased by 5)");
             playerAttack += 5;
+            playerHP = 10;
             attackLabelNumber.setText("" + playerAttack);
             drinkSpring = true;
         }
@@ -292,16 +296,16 @@ class GameFrame extends JFrame {
     private static void east() {
         position = "east";
         if(!banditDefeated) {
-            mainTextArea.setText("You walked into a forest and you encounter a " + monsterName[monsterCount]);
-            choiceButton1.setText("fight");
-            choiceButton2.setText("run");
+            mainTextArea.setText("You walked into a forest and you spotted a " + monsterName[monsterCount]+" \nin the distance robbing an old lady");
+            choiceButton1.setText("JUSTICE will be served!");
+            choiceButton2.setText("nah maybe next time");
             choiceButton3.setText("");
             choiceButton4.setText("");
         }
         else{
-            mainTextArea.setText("You walked into a forest. The path looks safe. ");
-            choiceButton1.setText("Go inside");
-            choiceButton2.setText("run");
+            mainTextArea.setText("You walked into a forest. The path looks safe now. ");
+            choiceButton1.setText("");
+            choiceButton2.setText("go back to the crossroad");
             choiceButton3.setText("");
             choiceButton4.setText("");
         }
@@ -313,10 +317,10 @@ class GameFrame extends JFrame {
             playerHP = 30;
             hpLabelNumber.setText("" + playerHP);
             eaten = true;
-            mainTextArea.setText("You are in front of the Wisdom Village.\nYou found some food and ate it. Your hp is increased to 30.\nEnter the village?");
+            mainTextArea.setText("You are in front of a Village.\nYou found some berries from the trees. Your hp is increased to 30.\nEnter the village?");
         }
         else{
-            mainTextArea.setText("You are in front of the Wisdom Village.\nEnter the village?");
+            mainTextArea.setText("You are in front of the Village.\nEnter the village?");
         }
         choiceButton1.setText("Walk inside");
         choiceButton2.setText("Go East");
@@ -326,7 +330,7 @@ class GameFrame extends JFrame {
 
     private static void fight() {
         position = "fight";
-        mainTextArea.setText("Enemy HP: " + monsterHP[monsterCount] + "\n\nWhat do you do?");
+        mainTextArea.setText("Enemy HP: " + monsterHP[monsterCount] + "\n Enemy Atk: " + monsterAttack[monsterCount]);
         choiceButton1.setText("Attack");
         choiceButton2.setText("");
         choiceButton3.setText("");
@@ -349,7 +353,7 @@ class GameFrame extends JFrame {
     private static void monsterAttack() {
         position = "monsterAttack";
 
-        mainTextArea.setText("The" + monsterName[monsterCount] + " is attacking you? Which direction would you dodge?");
+        mainTextArea.setText("The" + monsterName[monsterCount] + " is attacking you, Which direction should you dodge?");
 
         choiceButton1.setText("left");
         choiceButton2.setText("right");
@@ -360,7 +364,7 @@ class GameFrame extends JFrame {
     private static void dodge(){
         position = "dodge";
 
-        mainTextArea.setText("You dodged the attack! Now is the good chance to fight back!");
+        mainTextArea.setText("somehow you dodged it perfectly, the "+ monsterName[monsterCount]+"is now confused");
 
         choiceButton1.setText(">");
         choiceButton2.setText("");
@@ -386,8 +390,8 @@ class GameFrame extends JFrame {
         position = "win";
 
         if(monsterHP[0] < 1){
-            mainTextArea.setText("You defeated the" + monsterName[monsterCount] + " !");
-            mainTextArea.setText("You obtained a sword from the bandit!\nAttack damage + 2 ");
+            mainTextArea.setText("You defeated the " + monsterName[0] + " !");
+            mainTextArea.setText("You obtained a sword from the bandit!\nAttack damage + 2!");
             weapon = "Sword";
             weaponLabelName.setText(weapon);
             playerAttack += 2;
@@ -396,7 +400,11 @@ class GameFrame extends JFrame {
             banditDefeated = true;
             monsterHP[0] = 2;
         }
-
+        if(monsterHP[1]<1){
+            mainTextArea.setText("You killed the " + monsterName[monsterCount] + " !\n villager: wow you really did it, here is your reward:\n an invitation to the castle.   ");
+            beastDead = true;
+            monsterHP[1]=2;
+        }
         choiceButton1.setText("Go back");
         choiceButton2.setText("");
         choiceButton3.setText("");
@@ -411,7 +419,7 @@ class GameFrame extends JFrame {
 
     private static void ending() {
         position = "ending";
-        mainTextArea.setText("Guard: Wow! you are so cool, i guess i can let you in!");
+        mainTextArea.setText("Guard: Wow! you are so cool, i guess i can let you in!\n THE END");
         disableChoices();
     }
 
@@ -428,25 +436,24 @@ class GameFrame extends JFrame {
 
     private static void wisdomVillage() {
         position = "wisdomVillage";
-        mainTextArea.setText("Hi, this is the chief of wisdom of village. My son was cursed by the troll. Can you rack you mind. using our bow and arrow to hit the troll on the mountain at the height 4km. The distance between mountain and village is also 4km.");
-        choiceButton1.setText("Right Answer");
-        choiceButton2.setText("Wrong Answer");
-        choiceButton3.setText("Wrong Answer");
+        mainTextArea.setText("You see a sign said: To enter, shoot the bell with this bow, \n the distance from you to the bell is 5m, the distance from you to the wall where the bell at is 4m \n how high should you aim?.");
+        choiceButton1.setText("3m");
+        choiceButton2.setText("4m");
+        choiceButton3.setText("5m");
         choiceButton4.setText("Go Back");
     }
 
     private static void rightAnswer(){
         position = "rightAnswer";
         questionAnswered = true;
-        mainTextArea.setText("Thanks for saving my son! You can have the bow and arrows.\n I know beast is inside the village. You will get a valuable treasure after killing it. Do you want to go now?");
-
+        mainTextArea.setText("The door opened and you kept the bow, damage +5!");
         weapon = "Bow";
         weaponLabelName.setText(weapon);
         playerAttack += 5;
         attackLabelNumber.setText("" + playerAttack);
 
-        choiceButton1.setText("Fight the beast");
-        choiceButton2.setText("Go Back");
+        choiceButton1.setText("enter");
+        choiceButton2.setText("");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
@@ -454,22 +461,31 @@ class GameFrame extends JFrame {
     private static void wrongAnswer(){
         position = "wrongAnswer";
         questionAnswered = true;
-        mainTextArea.setText("Too bad. Anyway, I know there is a Wild beast inside the village. Do you want to fight with it now?");
+        mainTextArea.setText("You missed, but someone saw you and opend the door anyway");
 
-        choiceButton1.setText("Fight the beast");
-        choiceButton2.setText("Go Back");
+        choiceButton1.setText("enter");
+        choiceButton2.setText("");
         choiceButton3.setText("");
         choiceButton4.setText("");
     }
 
     private static void beast(){
         position  = "beast";
-        mainTextArea.setText("The beast has appeared! ");
+        mainTextArea.setText("Villager: you look pretty tough traveler, \nthere is wild beast not far from here, always attacking our town\nwould you slay it for us?");
 
-        choiceButton1.setText("Fight the beast");
-        choiceButton2.setText("Run back");
+        choiceButton1.setText("ok");
+        choiceButton2.setText("nah man ");
         choiceButton3.setText("");
         choiceButton4.setText("");
+    }
+
+    private static void beastFight(){
+        position ="beastFight";
+        mainTextArea.setText("You left the village and attempt to find the beast near the plains \n when suddenly you hear something approaching in fast ");
+        choiceButton1.setText("prepare yourself!");
+        choiceButton2.setText("");
+
+
     }
 
     public static class TitleScreenHandler implements ActionListener {
@@ -511,7 +527,11 @@ class GameFrame extends JFrame {
                         case "c1":
                             townGate();
                             break;
+                        case "c2":
+                            ending();
+                            break;
                     }
+
                     break;
                 case "attackGuard":
                     switch (yourChoice) {
@@ -523,6 +543,7 @@ class GameFrame extends JFrame {
                 case "crossRoad":
                     switch (yourChoice) {
                         case "c1":
+
                             north();
                             break;
                         case "c2":
@@ -597,21 +618,24 @@ class GameFrame extends JFrame {
                             dodge();
                             break;
                         case "c2":
-                            dodgeFail();
+                            dodgeFail();if(playerHP<=1){
+                            lose();
+                        }
                             break;
                     }
                     break;
                 case "dodge":
                     switch (yourChoice) {
                         case "c1":
-                            playerAttack();
+                            fight();
                             break;
                     }
                     break;
                 case "dodgeFail":
                     switch (yourChoice) {
                         case "c1":
-                            playerAttack();
+
+                            fight();
                             break;
                     }
                     break;
@@ -639,20 +663,20 @@ class GameFrame extends JFrame {
                     }
                     break;
                 case "rightAnswer":
-                    switch(yourChoice){
+                    switch (yourChoice) {
                         case "c1":
-                            monsterCount = 1;
-                            fight();
+                            beast();
                             break;
                         case "c2":
                             crossRoad();
+                            break;
+
                     }
                     break;
                 case "wrongAnswer":
                     switch (yourChoice){
                         case "c1":
-                            monsterCount = 1;
-                            fight();
+                            beast();
                             break;
                         case "c2":
                             crossRoad();
@@ -663,13 +687,23 @@ class GameFrame extends JFrame {
                     switch (yourChoice) {
                         case "c1":
                             monsterCount = 1;
-                            fight();
+                            beastFight();
                             break;
                         case "c2":
                             crossRoad();
                             break;
                     }
                     break;
+                case "beastFight":
+                    switch (yourChoice){
+                        case "c1":
+                            fight();
+                            break;
+
+
+                    }
+
+
             }
         }
     }
